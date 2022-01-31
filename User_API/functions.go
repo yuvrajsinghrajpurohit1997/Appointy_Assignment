@@ -29,6 +29,8 @@ func NewUser(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&user)
 	id := shortuuid.New()
 	user.UniqueID = id
+	encodedPassword := b64.StdEncoding.EncodeToString([]byte(user.Password))
+	user.Password = encodedPassword
 	DB.Create(&user)
 	json.NewEncoder(w).Encode(&user)
 }
